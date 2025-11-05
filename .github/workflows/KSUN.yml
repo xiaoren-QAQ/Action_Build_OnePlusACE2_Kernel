@@ -1,4 +1,4 @@
-name: Build KernelSU Next OnePlus Ace2
+name: Build OnePlus_ACE2_KSUN
 on:
   workflow_dispatch:
     inputs:

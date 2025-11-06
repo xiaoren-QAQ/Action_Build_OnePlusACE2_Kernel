@@ -484,6 +484,42 @@ jobs:
           grep -n "try_umount" core_hook.c
           
           echo "修复完成！"
+      - name: Fix KernelSU Duplicate Symbols
+  run: |
+    cd kernel_workspace/kernel_platform/common/drivers/kernelsu
+    
+    echo "🔧 修复KernelSU重复符号问题..."
+    
+    # 检查当前的Makefile
+    echo "📋 当前Makefile内容："
+    cat Makefile
+    
+    # 修复Makefile，确保selinux目录只被包含一次
+    if grep -q "selinux/" Makefile; then
+      echo "修复Makefile中的selinux目录引用..."
+      # 删除所有selinux相关的行
+      sed -i '/selinux/d' Makefile
+      # 重新添加正确的selinux目录引用
+      echo "obj-y += selinux/" >> Makefile
+    fi
+    
+    # 检查selinux子目录的Makefile
+    if [ -f selinux/Makefile ]; then
+      echo "selinux/Makefile内容："
+      cat selinux/Makefile
+      
+      # 确保selinux目录中的文件只被编译一次
+      echo "obj-y += selinux.o sepolicy.o rules.o" > selinux/Makefile.tmp
+      grep -v "obj-y" selinux/Makefile >> selinux/Makefile.tmp 2>/dev/null || true
+      mv selinux/Makefile.tmp selinux/Makefile
+    fi
+    
+    echo "✅ 修复后的Makefile："
+    cat Makefile
+    if [ -f selinux/Makefile ]; then
+      echo "✅ 修复后的selinux/Makefile："
+      cat selinux/Makefile
+    fi    
 
       - name: Apply LSM_BBG
         if: ${{ github.event.inputs.LSM == 'true' }}
@@ -572,6 +608,32 @@ jobs:
             mv Makefile.tmp Makefile
           fi
           
+          echo "✅ 修复完成"
+      - name: Manual Fix Duplicate Compilation
+        run: |
+          cd kernel_workspace/kernel_platform
+    
+          echo "🔧 手动修复重复编译问题..."
+    
+          # 检查是否有多处引用了KernelSU
+          echo "查找所有引用kernelsu的地方："
+          find . -name "Makefile" -o -name "Kconfig" | xargs grep -l "kernelsu" 2>/dev/null || true
+    
+          # 检查drivers目录的Makefile
+          if [ -f drivers/Makefile ]; then
+            echo "drivers/Makefile内容（kernelsu相关）："
+             grep -A2 -B2 "kernelsu" drivers/Makefile || echo "没有找到kernelsu引用"
+          fi
+    
+          # 确保只在drivers/Makefile中引用一次kernelsu
+          if [ -f drivers/Makefile ]; then
+            echo "修复drivers/Makefile..."
+            # 删除所有kernelsu相关的行
+            sed -i '/kernelsu/d' drivers/Makefile
+            # 添加一次引用
+            echo "obj-y += kernelsu/" >> drivers/Makefile
+          fi
+    
           echo "✅ 修复完成"
           
       # Custom kernel build time, without adding #1 SMP PREEMPT 自定义内核构建时间，不要加入#1 SMP PREEMPT

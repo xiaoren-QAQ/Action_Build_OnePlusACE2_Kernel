@@ -1,4 +1,4 @@
-name: TEST_Build OnePlus_ACE2_KernelSU_SUSFS
+name: Build OP_ACE2_KernelSU_SUSFS
 on:
   workflow_dispatch:
     inputs:

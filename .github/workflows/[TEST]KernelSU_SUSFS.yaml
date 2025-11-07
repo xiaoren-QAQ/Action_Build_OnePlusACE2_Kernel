@@ -24,15 +24,15 @@ on:
         default: true
       kernelsu_branch:
         type: choice
-        description: "KernelSU版本（默认稳定版即不填，当版本大更新时需要自选旧版）"
+        description: "KernelSU版本（当版本大更新时需要自选旧版）"
         required: true
-        default: " v1.0.5"
+        default: "main"
         options:
-          -  v0.9.5
-          -  v1.0.5
-          -  v2.0.0
-          -  v2.1.0 
-          -  main
+          - v0.9.5
+          - v1.0.5
+          - v2.0.0
+          - v2.1.0 
+          - main
 jobs:
   build:
     name: ${{ github.event.inputs.LSM == 'true' && ' [LSM]' || '' }}For OnePlus_ACE2_KernelSU_${{ github.event.inputs.SUSFS == 'true' && ' [SUSFS]' || '' }}
@@ -234,7 +234,7 @@ jobs:
       - name: Add KernelSU
         run: |
           cd kernel_workspace/kernel_platform
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -${github.event.inputs.kernelsu_branch}
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash - ${github.event.inputs.kernelsu_branch}
      
       
       - name: Add SUSFS Support with Patches

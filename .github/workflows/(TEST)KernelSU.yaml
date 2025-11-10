@@ -241,10 +241,20 @@ jobs:
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-android12-5.10.patch ./common/
           cp -r ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp -r ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
+          cp ../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ../KernelSU
 
           cd common
           echo ">>> 应用 SUSFS 主补丁..."
           patch -p1 --forward < ../../susfs4ksu/kernel_patches/50_add_susfs_in_gki-android12-5.10.patch || true
+          
+          if grep -qxF $'\t\tgoto show_pad;' ./fs/proc/task_mmu.c; then
+            echo "vma_pages Line found. Revert Fake Patching!"
+            sed -i -e 's/goto show_pad;/return 0;/' ./fs/proc/task_mmu.c
+          fi          
+          
+          cd ../KernelSU
+          patch -p1 --forward < 10_enable_susfs_for_ksu.patch 
+          
 
       - name: Add Configuration Settings
         run: |
@@ -342,6 +352,24 @@ jobs:
             ./kernel_platform/oplus/build/oplus_build_kernel.sh waipio gki
           fi
 
+
+      - name: Make AnyKernel3
+        run: |
+          git clone https://github.com/zhiyi0314/AnyKernel3 --depth=1
+          rm -rf ./AnyKernel3/.git
+          
+          mkdir -p kernel_workspace/kernel_platform/out/Final-Image-Find/
+          image_path=$(find "./kernel_workspace/kernel_platform/common/out/" -name "Image" | head -n 1)
+          if [ -z "$image_path" ]; then
+            image_path=$(find "./kernel_workspace/kernel_platform/out/" -name "Image" | head -n 1)
+          fi
+          if [ -n "$image_path" ] && [ -f "$image_path" ]; then
+            cp "$image_path" ./AnyKernel3/Image
+            cp "$image_path" kernel_workspace/kernel_platform/out/Final-Image-Find/Image
+          else
+            echo "未找到 Image 文件"
+            exit 1
+          fi
       - name: Download Latest SUSFS Module from CI
         if: ${{ github.event.inputs.SUSFS_CI == 'CI'}}
         continue-on-error: true
@@ -368,24 +396,6 @@ jobs:
         run: |
           wget -O ksu_module_susfs_1.5.2+_Release.zip https://github.com/sidex15/ksu_module_susfs/releases/latest/download/ksu_module_susfs_1.5.2+.zip
           cp ksu_module_susfs_1.5.2+_Release.zip ./AnyKernel3/
-
-      - name: Make AnyKernel3
-        run: |
-          git clone https://github.com/zhiyi0314/AnyKernel3 --depth=1
-          rm -rf ./AnyKernel3/.git
-          
-          mkdir -p kernel_workspace/kernel_platform/out/Final-Image-Find/
-          image_path=$(find "./kernel_workspace/kernel_platform/common/out/" -name "Image" | head -n 1)
-          if [ -z "$image_path" ]; then
-            image_path=$(find "./kernel_workspace/kernel_platform/out/" -name "Image" | head -n 1)
-          fi
-          if [ -n "$image_path" ] && [ -f "$image_path" ]; then
-            cp "$image_path" ./AnyKernel3/Image
-            cp "$image_path" kernel_workspace/kernel_platform/out/Final-Image-Find/Image
-          else
-            echo "未找到 Image 文件"
-            exit 1
-          fi
 
       - name: Upload AnyKernel3
         uses: actions/upload-artifact@v4

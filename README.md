@@ -1,5 +1,5 @@
 # 使用GitHub Action 构建一加ACE2内核（KernelSU,SukiSU,KernelSU NEXT）
-Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build) ，
+Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build) 
 ## 当前状态:
 - [ ] KSU-SUSFS
 - [ ] MKSU-SUSFS
@@ -13,7 +13,7 @@ Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build) ，
 - 可选原版KernelSU,，MKSU，SukiSU,KernelSU NEXT(同样支持Wild KSU管理器)
 - SukiSU不接受关于KPM的反馈，因为本身就有BUG（能用是能用，能接受不时重启以及卡死就可以）
 - 除了SukiSU外，勾选SUSFS都需要安装模块，否则无法调整设置
-- action思路以及（大）部分代码 来自[Numbersf](https://github.com/Numbersf) ，为大佬点Follow和Star！
+- Action思路以及（大）部分代码 来自[Numbersf](https://github.com/Numbersf) ，为大佬点Follow和Star！
 - 已经Fork的用户，请回到我的仓库看看，能正常使用就可以不同步我的更新（因为改一个字也是改，测试时会提交大量的commit）
 
 ### 当上游更新仓库时，SUSFS可能没有同步上游，所以有时候会导致SUSFS不可用，请等待上游仓库更新，或者使用旧版

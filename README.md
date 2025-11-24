@@ -1,4 +1,4 @@
-# 使用GitHub Action 构建一加ACE2内核（KernelSU,SukiSU,KernelSU NEXT）
+# 使用GitHub Action 构建一加ACE2内核（KernelSU,MKSU,KernelSU NEXT）
 Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build) 
 ## 当前状态:
 - [x] KSU

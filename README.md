@@ -24,4 +24,4 @@ Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build)
 ## 使用此仓库发布内核须知：
 - 所有带SUSFS的Action都可以自选SUSFS模块下载（SukiSU不需要）
 - 所有已经构建成功的Ak3包都可以在包内添加manager.apk实现在刷写内核时安装管理器
--sb SukiSu天天不知道更新点啥有用没用的，停止支持，想用SukiSu去fork numbersf的action
+- sb SukiSu天天不知道更新点啥有用没用的，停止支持，想用SukiSu去fork numbersf的action

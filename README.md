@@ -5,7 +5,6 @@ Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build)
 - [ ] KSU-SUSFS
 - [x] MKSU
 - [ ] MKSU-SUSFS
-- [x] SukiSU-SUSFS
 - [x] KSUN-SUSFS
 ## 可选功能:
 - [x] BBG防格机
@@ -13,9 +12,7 @@ Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build)
 
 ## 注意：
 - 只用于OKI5.10的构建，请不要问除（一加ACE2）以外其他机型的问题（不做隔空适配）
-- 可选原版KernelSU,，MKSU，SukiSU,KernelSU NEXT(同样支持Wild KSU管理器)
-- SukiSU不接受关于KPM的反馈，因为本身就有BUG（能用是能用，能接受不时重启以及卡死就可以）
-- 除了SukiSU外，勾选SUSFS都需要安装模块，否则无法调整设置
+- 可选原版KernelSU,MKSU，KernelSU NEXT(同样支持Wild KSU管理器)
 - Action思路以及（大）部分代码 来自[Numbersf](https://github.com/Numbersf) ，为大佬点Follow和Star！
 - 已经Fork的用户，请回到我的仓库看看，能正常使用就可以不同步我的更新（因为改一个字也是改，测试时会提交大量的commit）
 
@@ -27,3 +24,4 @@ Forked by [Action by Numbersf](https://github.com/Numbersf/Action-Build)
 ## 使用此仓库发布内核须知：
 - 所有带SUSFS的Action都可以自选SUSFS模块下载（SukiSU不需要）
 - 所有已经构建成功的Ak3包都可以在包内添加manager.apk实现在刷写内核时安装管理器
+-sb SukiSu天天不知道更新点啥有用没用的，停止支持，想用SukiSu去fork numbersf的action
